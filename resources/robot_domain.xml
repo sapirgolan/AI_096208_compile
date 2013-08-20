@@ -1,25 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
 <Domain>
 	<types>
-		<name>location</name>
-		<name>tier</name>
-		<name>spareTier</name>
+		<type>location</type>
+		<type>tier</type>
+		<type>spareTier</type>
 	</types>
 	<Predicates>
 		<Literal>
 		  <Name>at</Name>
+		  <Positive>true</Positive>
 		  <Params>
 			<string>?x</string>
 		  </Params>
 		</Literal>
 		<Literal>
 		  <Name>noflat</Name>
-		  <Type
+		  <Positive>true</Positive>
 		  <Params>
 			<string>?t</string>
 		  </Params>
 		</Literal>
 		<Literal>
 		  <Name>spare</Name>
+		  <Positive>true</Positive>
 		  <Params>
 			<string>?s</string>
 		  </Params>
@@ -30,21 +34,21 @@
 		<Action>
 			<Name>fix</Name>
 			<Params>
-				<string>?X</string>
+				<string>?x</string>
 				<string>?t</string>
 				<string>?s</string>
 			</Params>
 			<PreConditions>
 				<Literal>
 					<Name>at</Name>
-					<Type>pos</Type>
+					<Positive>true</Positive>
 					<Params>
 						<string>?x</string>
 					</Params>
 				</Literal>	  
 				<Literal>
 					<Name>noflat</Name>
-					<Type>pos</Type>
+					<Positive>true</Positive>
 					<Params>
 						<string>?t</string>
 					</Params>
@@ -57,7 +61,7 @@
 					<AddedLiterals>
 						<Literal>
 							<Name>spare</Name>
-							<Type>pos</Type>
+							<Positive>true</Positive>
 							<Params>
 								<string>?s</string>
 							</Params>
@@ -66,7 +70,7 @@
 					<DeletedLiterals>
 						<Literal>
 							<Name>noflat</Name>
-							<Type>pos</Type>
+							<Positive>true</Positive>
 							<Params>
 								<string>?t</string>
 							</Params>
@@ -81,55 +85,50 @@
 			<Params>
 				<string>?x</string>
 				<string>?t</string>
-		  </Params>
-		  <PreConditions>
+			</Params>
+			<PreConditions>
 				<Literal>
 					<Name>at</Name>
-					<Type>pos</Type>
+					<Positive>true</Positive>
 					<Params>
 						<string>?x</string>
 					</Params>
 				</Literal>
 				<Literal>
 					<Name>noflat</Name>
-					<Type>pos</Type>
+					<Positive>true</Positive>
 					<Params>
 						<string>?t</string>
 					</Params>
 				</Literal>						
-		  </PreConditions>
-		  <Effects>
-			<Effect>
-			  <Name>e0</Name>
-			  <EffType>Single</EffType>
-			  <AddedLiterals>
-				<Literal>
-					<Name>has</Name>
-					<Type>Pos</Type>
-					<Params>
-						<string>?bowl</string>
-						<string>n0</string>				
-					</Params>
-				</Literal>
-				<Literal>
-					<Name>unspoiled</Name>
-					<Type>Pos</Type>
-					<Params>
-						<string>?bowl</string>
-					</Params>
-				</Literal>
-			  </AddedLiterals>
-			 <DeletedLiterals>
-				<Literal>
-					<Name>has</Name>
-					<Type>Pos</Type>
-					<Params>
-						<string>?bowl</string>
-						<string>?no-of-eggs</string>				
-					</Params>
-				</Literal>			
-			  </DeletedLiterals>
-			</Effect>
+			</PreConditions>
+			<Effects>
+				<Effect>
+					<Name>e0</Name>
+					<addLiterals></addLiterals>
+					<DeletedLiterals>
+						<Literal>
+							<Name>at</Name>
+							<Positive>false</Positive>
+							<Params>
+								<string>?x</string>
+							</Params>
+						</Literal>			
+					</DeletedLiterals>
+				</Effect>
+				<Effect>
+					<Name>e1</Name>
+					<addLiterals></addLiterals>
+					<DeletedLiterals>
+						<Literal>
+							<Name>noflat</Name>
+							<Positive>false</Positive>
+							<Params>
+								<string>?t</string>
+							</Params>
+						</Literal>
+					</DeletedLiterals>
+				</Effect>
 		  </Effects>
 		</Action>
 	</Actions>
