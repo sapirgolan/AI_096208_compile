@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<Domain>
+	<Name>domain of problem</Name>
+	<Types>
+		<Type>location</Type>
+		<Type>tier</Type>
+		<Type>spareTier</Type>
+	</Types>
+	<Predicates>
+		<Predicat>
+		  <Name>at</Name>
+		  <Parameters>
+			<Parameter>
+				<Name>?x</Name>
+				<Type>location</Type>
+			</Parameter>
+		  </Parameters>
+		</Predicat>
+		<Predicat>
+		  <Name>noflat</Name>
+		  <Parameters>
+			<Parameter>
+				<Name>?t</Name>
+				<Type>tier</Type>
+			</Parameter>
+		  </Parameters>
+		</Predicat>
+		<Predicat>
+		  <Name>spare</Name>
+		  <Parameters>
+			<Parameter>
+				<Name>?s</Name>
+				<Type>spareTier</Type>
+			</Parameter>
+		  </Parameters>
+		</Predicat>
+	</Predicates>
+	<Actions>
+		<Action>
+			<Name>fix</Name>
+			<Precondition>
+			
+					<Predicat>
+					  <Name>at</Name>
+					  <isPositive>true</isPositive>
+					  <Parameters>
+						<Parameter>
+							<Name>?x</Name>
+							<Type>location</Type>
+						</Parameter>
+					  </Parameters>
+					</Predicat>
+					<Predicat>
+						<Name>spare</Name>
+						<isPositive>true</isPositive>
+						<Parameters>
+							<Parameter>
+								<Name>?s</Name>
+								<Type>spareTier</Type>
+							</Parameter>
+						</Parameters>
+					</Predicat>
+				
+			</Precondition>
+			
+				<Effect>
+					<Name>e0</Name>
+					<AddedPredicates>
+						<Predicat>
+						  <Name>noflat</Name>
+						  <Parameters>
+							<Parameter>
+								<Name>?t</Name>
+								<Type>tier</Type>
+							</Parameter>
+						  </Parameters>
+						</Predicat>
+					</AddedPredicates>
+					<DeletedPredicates>
+						<Predicat>
+						  <Name>spare</Name>
+						  <Parameters>
+							<Parameter>
+								<Name>?s</Name>
+								<Type>spareTier</Type>
+							</Parameter>
+						  </Parameters>
+						</Predicat>			
+					</DeletedPredicates>
+				</Effect>
+			
+		</Action>
+		
+		<Action>
+			<Name>move</Name>
+			<Precondition>
+				
+					<Predicat>
+					  <Name>at</Name>
+					  <isPositive>true</isPositive>
+					  <Parameters>
+						<Parameter>
+							<Name>?x</Name>
+							<Type>location</Type>
+						</Parameter>
+					  </Parameters>
+					</Predicat>
+					<Predicat>
+					  <Name>noflat</Name>
+					  <isPositive>true</isPositive>
+					  <Parameters>
+						<Parameter>
+							<Name>?t</Name>
+							<Type>tier</Type>
+						</Parameter>
+					  </Parameters>
+					</Predicat>
+				
+			</Precondition>
+							
+				<Effect>
+					<Name>e0</Name>
+					<AddedPredicates></AddedPredicates>
+					<DeletedPredicates>
+						<Predicat>
+							<Name>at</Name>
+							<Parameters>
+								<Parameter>
+									<Name>?x</Name>
+									<Type>location</Type>
+								</Parameter>
+							</Parameters>
+						</Predicat>		
+					</DeletedPredicates>
+				</Effect>
+				<Effect>
+					<Name>e1</Name>
+					<AddedPredicates></AddedPredicates>
+					<DeletedPredicates>
+						<Predicat>
+							<Name>noflat</Name>
+							<isPositive>true</isPositive>
+							<Parameters>
+								<Parameter>
+									<Name>?t</Name>
+									<Type>tier</Type>
+								</Parameter>
+							</Parameters>
+						</Predicat>		
+					</DeletedPredicates>
+				</Effect>
+		  
+		</Action>
+	</Actions>
+</Domain>
