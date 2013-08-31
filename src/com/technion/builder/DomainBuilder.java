@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.technion.ai.dao.Domain;
+import com.technion.ai.dao.Predicat;
 import com.technion.utils.Utils;
 
 public class DomainBuilder {
@@ -25,24 +26,42 @@ public class DomainBuilder {
 			buildDomainDefenitions();
 			buildDomainPrefix();
 			buildTypes();
+			this.addEmptyLine();
+			buildPredicates();
+			this.addEmptyLine();
 		}
 		return this.stringBuilder;
 	}
 	
+	private void buildPredicates() {
+		String predicatPrefix = prop.getProperty("predicatPrefix");
+		this.addStringInNewLine(predicatPrefix + "\n");
+		
+		List<Predicat> predicats = problemDomain.getPredicates().getPredicat();
+		for (Predicat predicat : predicats) {
+			this.addStringInNewLine(predicat.toString());
+		}
+		this.addStringInNewLine(")");
+	}
+
 	private void buildTypes() {
 		String typesLine = prop.getProperty("types");
 		String typesValues = problemDomain.getTypes().toString();
 		typesLine = String.format(typesLine, typesValues);
-		this.addNewLine(typesLine);
+		this.addStringInNewLine(typesLine);
 	}
 
-	private void addNewLine(String newLine) {
+	private void addStringInNewLine(String newLine) {
 		stringBuilder.append("\n" + newLine);
+	}
+	
+	private void addEmptyLine() {
+		this.addStringInNewLine("");
 	}
 	
 	private void buildDomainPrefix() {
 		String string = prop.getProperty("domainPrefix");
-		addNewLine(string);
+		addStringInNewLine(string);
 	}
 
 	/**
