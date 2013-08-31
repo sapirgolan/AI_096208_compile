@@ -1,5 +1,6 @@
 package com.technion.builder;
 
+import java.util.List;
 import java.util.Properties;
 
 import com.technion.ai.dao.Domain;
@@ -22,11 +23,28 @@ public class DomainBuilder {
 		this.prop = Utils.initPropertiesFile(PROPERTIES_PATH);
 		if ( this.prop != null ) {
 			buildDomainDefenitions();
+			buildDomainPrefix();
+			buildTypes();
 		}
 		return this.stringBuilder;
 	}
 	
+	private void buildTypes() {
+		String typesLine = prop.getProperty("types");
+		String typesValues = problemDomain.getTypes().toString();
+		typesLine = String.format(typesLine, typesValues);
+		this.addNewLine(typesLine);
+	}
+
+	private void addNewLine(String newLine) {
+		stringBuilder.append("\n" + newLine);
+	}
 	
+	private void buildDomainPrefix() {
+		String string = prop.getProperty("domainPrefix");
+		addNewLine(string);
+	}
+
 	/**
 	 * This method insert the static definition of the domain and its name
 	 */
@@ -34,6 +52,10 @@ public class DomainBuilder {
 		stringBuilder.append("(");
 		String domainDefenition = prop.getProperty("domainDefenition");
 		domainDefenition = String.format(domainDefenition, problemDomain.getName());
-		stringBuilder.append(domainDefenition);
+		stringBuilder.append(domainDefenition + "\n");
+	}
+
+	public Domain getProblemDomain() {
+		return problemDomain;
 	}
 }

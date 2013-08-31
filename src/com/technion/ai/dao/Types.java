@@ -9,6 +9,7 @@
 package com.technion.ai.dao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -79,5 +80,21 @@ public class Types {
         }
         return this.type;
     }
+
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		List<String> list = this.getType();
+		for (String string : list) {
+			stringBuilder.append(string + " ");
+		}
+		String result = stringBuilder.toString();
+		if (result.length() > 0) {
+			result  = result.substring(0, result.length() -1);
+		}
+		
+		return result;
+	}
+    
 
 }
