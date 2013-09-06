@@ -1,7 +1,5 @@
 package com.technion.junits;
 
-import static org.junit.Assert.fail;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +13,6 @@ import com.technion.ai.dao.Action;
 import com.technion.ai.dao.Actions;
 import com.technion.ai.dao.Domain;
 import com.technion.ai.dao.Parameter;
-import com.technion.ai.dao.Precondition;
 import com.technion.ai.dao.Predicat;
 import com.technion.ai.dao.Predicates;
 import com.technion.ai.dao.Types;
@@ -106,8 +103,9 @@ public class DomainBuilderTest {
 		action.setName("fix");
 		actions.getAction().add(action);
 		
-		Precondition precondition = new Precondition();
-		action.setPrecondition(precondition);
+//		Precondition precondition = new Precondition();
+//		action.getPreconditions().add(e)
+//		action.setPrecondition(precondition);
 		
 		Parameter parameterOne = createParmeter("?w", "type_1");
 		Parameter parameterTwo = createParmeter("?x", "type_1");
@@ -120,9 +118,10 @@ public class DomainBuilderTest {
 		Predicat predicatOne = createPredicat(Arrays.asList(parameterOne, parameterTwo));
 		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree, parameterFour));
 		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive));
-		precondition.getPredicat().add(predicatOne);
-		precondition.getPredicat().add(predicatTwo);
-		precondition.getPredicat().add(predicatThree);
+//		precondition.getPreconditions().add(predicatOne);
+//		precondition.getPreconditions().add(predicatTwo);
+//		precondition.getPreconditions().add(predicatThree);
+		action.getPreconditions().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
 		
 		StringBuilder buildDomain = classUnderTest.buildDomain();
 		String domainStr = buildDomain.toString();

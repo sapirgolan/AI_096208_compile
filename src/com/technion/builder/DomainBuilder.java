@@ -62,8 +62,8 @@ public class DomainBuilder {
 			this.addStringInNewLine(actionPrefix);
 			this.addStringInLine(action.getName());
 			this.addStringInNewLine(preconditionPrefix);
-			List<Predicat> predicats = action.getPrecondition().getPredicat();
-			writeActionParameters(predicats);
+			List<Predicat> preconditionsPredicats = action.getPreconditions();
+			writeActionParameters(preconditionsPredicats);
 		}
 	}
 
