@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Properties;
 
 import com.technion.ai.dao.Action;
-import com.technion.ai.dao.Actions;
 import com.technion.ai.dao.Domain;
+import com.technion.ai.dao.Effect;
 import com.technion.ai.dao.Parameter;
 import com.technion.ai.dao.Predicat;
 import com.technion.utils.Utils;
@@ -19,6 +19,12 @@ public class DomainBuilder {
 	private Domain problemDomain;
 	private Properties prop;
 	private static final String PROPERTIES_PATH = "/com/technion/properties/strings.properties";
+	private String preconditionPrefix;
+	private String predicatPrefix;
+	private String andOperator;
+	private String notOperator;
+	private String actionPrefix;
+	private String effectPrefix;
 ;
 	
 	public DomainBuilder(Domain problemDomain) {
@@ -29,6 +35,7 @@ public class DomainBuilder {
 	public StringBuilder buildDomain() {
 		this.prop = Utils.initPropertiesFile(PROPERTIES_PATH);
 		if ( this.prop != null ) {
+			getStrings();
 			buildDomainDefenitions();
 			buildDomainPrefix();
 			buildTypes();
@@ -40,31 +47,65 @@ public class DomainBuilder {
 		return this.stringBuilder;
 	}
 	
+	/**
+	 * This method populate strings from properties file
+	 */
+	private void getStrings() {
+		preconditionPrefix = prop.getProperty("preconditionPrefix");
+		predicatPrefix = prop.getProperty("predicatPrefix");
+		andOperator = prop.getProperty("andOperator");
+		notOperator = prop.getProperty("notOperator");
+		actionPrefix = prop.getProperty("actionPrefix");
+		effectPrefix = prop.getProperty("effectPrefix");
+
+	}
+
 	private void buildPredicates() {
-		String predicatPrefix = prop.getProperty("predicatPrefix");
 		this.addStringInNewLine(predicatPrefix + "\n");
 		
 		List<Predicat> predicats = problemDomain.getPredicates().getPredicat();
 		for (Predicat predicat : predicats) {
-			this.addStringInNewLine(predicat.toString());
+			this.addStringInNewLine(predicat.toString(true));
 		}
 		this.addStringInNewLine(")");
 	}
 	
 	private void buldActions() {
 		this.addEmptyLine();
-		String actionPrefix = prop.getProperty("actionPrefix");
-		String preconditionPrefix = prop.getProperty("preconditionPrefix");
-		String effectPrefix = prop.getProperty("effectPrefix");
 		
 		List<Action> actions = problemDomain.getActions().getAction();
 		for (Action action : actions) {
 			this.addStringInNewLine(actionPrefix);
 			this.addStringInLine(action.getName());
-			this.addStringInNewLine(preconditionPrefix);
 			List<Predicat> preconditionsPredicats = action.getPreconditions();
 			writeActionParameters(preconditionsPredicats);
+			writeActionPrecondition(preconditionsPredicats);
 		}
+	}
+
+	private void writeActionEffects(List<Effect> effects) {
+		// TODO Auto-generated method stub
+
+	}
+	private void writeActionPrecondition(List<Predicat> preconditionsPredicats) {
+		String preconditionPrefix = prop.getProperty("preconditionPrefix");
+		
+		this.addStringInNewLine(preconditionPrefix);
+		if ( preconditionsPredicats.size() > 1 ) {
+			this.addStringInLine(andOperator);
+		}
+		//predicat is the a condition like "(at ?x ?a)"
+		for (Predicat predicat : preconditionsPredicats) {
+			//parameters are the name of variable.  like "?x"
+			if ( predicat.isPositive()!=null && !predicat.isPositive() ) {
+				this.addStringInNewLine("(" + notOperator);
+				this.addStringInLine( predicat.toString(false) );
+				this.addStringInLine(")");
+			} else {
+				this.addStringInNewLine( predicat.toString(false) );
+			}
+		}
+		this.addStringInNewLine(")");
 	}
 
 	private void writeActionParameters(List<Predicat> predicats) {

@@ -1,5 +1,7 @@
 package com.technion.junits;
 
+import static org.junit.Assert.fail;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,7 +70,7 @@ public class DomainBuilderTest {
 		problemDomain.setTypes(types);
 		Parameter parameterOne = createParmeter("?x", "type_1");
 		Parameter parameterTwo = createParmeter("?z", "type_2");
-		Predicat predicat = createPredicat(Arrays.asList(parameterOne, parameterTwo));
+		Predicat predicat = createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
 		//add predicat
 		problemDomain.getPredicates().getPredicat().add(predicat);
 		
@@ -79,9 +81,9 @@ public class DomainBuilderTest {
 		Assert.assertTrue("", domainStr.contains( "( predicat_1 ?x - type_1 ?z - type_2 )" ));
 	}
 
-	private Predicat createPredicat(List<Parameter> parameters) {
+	private Predicat createPredicat(List<Parameter> parameters, String predicatName) {
 		Predicat predicat = new Predicat();
-		predicat.setName("predicat_1");
+		predicat.setName(predicatName);
 		//add parameter
 		for (Parameter parameter : parameters) {
 			predicat.getParameter().add(parameter);
@@ -97,15 +99,12 @@ public class DomainBuilderTest {
 	}
 
 	@Test
+	//test writeActionParameters()
 	public void testBuldActions() {
 		Actions actions = classUnderTest.getProblemDomain().getActions();
 		Action action = new Action();
 		action.setName("fix");
 		actions.getAction().add(action);
-		
-//		Precondition precondition = new Precondition();
-//		action.getPreconditions().add(e)
-//		action.setPrecondition(precondition);
 		
 		Parameter parameterOne = createParmeter("?w", "type_1");
 		Parameter parameterTwo = createParmeter("?x", "type_1");
@@ -115,12 +114,9 @@ public class DomainBuilderTest {
 		
 		Parameter parameterFive = createParmeter("?a", "type_2");
 		
-		Predicat predicatOne = createPredicat(Arrays.asList(parameterOne, parameterTwo));
-		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree, parameterFour));
-		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive));
-//		precondition.getPreconditions().add(predicatOne);
-//		precondition.getPreconditions().add(predicatTwo);
-//		precondition.getPreconditions().add(predicatThree);
+		Predicat predicatOne = createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
+		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree, parameterFour),"predicat_1");
+		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive),"predicat_1");
 		action.getPreconditions().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
 		
 		StringBuilder buildDomain = classUnderTest.buildDomain();
@@ -130,5 +126,42 @@ public class DomainBuilderTest {
 		Assert.assertTrue("", domainStr.contains( "?w ?x ?z - type_1" ));
 		Assert.assertTrue("", domainStr.contains( "?y ?a - type_2" ));
 	}
+	
+	@Test
+	//WriteActionPrecondition()
+	public void testBuldActions2(){
+		Actions actions = classUnderTest.getProblemDomain().getActions();
+		Action action = new Action();
+		action.setName("fix");
+		actions.getAction().add(action);
+		
+		Parameter parameterOne = createParmeter("?w", "soldier");
+		Parameter parameterTwo = createParmeter("?x", "soldier");
+		
+		Parameter parameterThree = createParmeter("?y", "policeman");
+		
+		Parameter parameterFive = createParmeter("?a", "man");
+		
+		Predicat predicatOne = createPredicat(Arrays.asList(parameterOne, parameterTwo),"move");
+		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree),"drop");
+		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive),"delete");
+		predicatThree.setIsPositive(false);
+		action.getPreconditions().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
+		
+		StringBuilder buildDomain = classUnderTest.buildDomain();
+		String domainStr = buildDomain.toString();
+		Assert.assertTrue("", domainStr.contains("(:action fix"));
+		Assert.assertTrue("", domainStr.contains( ":precondition ( AND" ));
+		Assert.assertTrue("", domainStr.contains( "( move ?w ?x )" ));
+		Assert.assertTrue("", domainStr.contains( "( drop ?y )" ));
+		Assert.assertTrue("", domainStr.contains( "(NOT ( delete ?a ) )" ));
+	}
+	
+	@Test
+	//writeActionEffects()
+	public void testBuldActions3(){
+		fail("Not yet implimented");
+	}
+	
 }
 

@@ -118,7 +118,7 @@ public class Predicat {
      *     {@link Boolean }
      *     
      */
-    public Boolean isIsPositive() {
+    public Boolean isPositive() {
         return isPositive;
     }
 
@@ -158,18 +158,35 @@ public class Predicat {
         this.parameters = value;
     }
     
+    /** 
+     * Call {@link #toString(boolean)} with boolean parameter set to false 
+     * @see Predicat#toString(boolean)
+     **/
     @Override
    	public String toString() {
-       	StringBuilder builder = new StringBuilder();
+    	return this.toString(false);
+   	}
+    
+    /**
+     * This method create the String representation of a predicat.
+     * It can create it in two ways: with parameters's Type or without. The decision is based on the value of <code>withType</code> parameter
+     * @param withType - boolean flag. If set to true the method generate String representation of a predicate with parameters's Type. 
+     * @return Returns a string representation of the object
+     */
+    public String toString(boolean withType) {
+    	StringBuilder builder = new StringBuilder();
        	builder.append("( ");
        	builder.append(this.name + " ");
        	for (Parameter param : parameter) {
-       		String parameter = param.getName() + " - " + param.getType() + " ";
+       		String parameter = param.getName() + " ";
+       		if (withType) {
+       			parameter += "- " + param.getType() + " ";
+       		}
        		builder.append( parameter );
 		}
        	builder.append(")");
        	
    		return builder.toString();
-   	}
+    }
 
 }
