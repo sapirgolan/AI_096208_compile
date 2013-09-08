@@ -63,7 +63,7 @@ public class DomainBuilder {
 	private void buildPredicates() {
 		this.addStringInNewLine(predicatPrefix + "\n");
 		
-		List<Predicat> predicats = problemDomain.getPredicates().getPredicat();
+		List<Predicat> predicats = problemDomain.getPredicats();
 		for (Predicat predicat : predicats) {
 			this.addStringInNewLine(predicat.toString(true));
 		}
@@ -73,7 +73,7 @@ public class DomainBuilder {
 	private void buldActions() {
 		this.addEmptyLine();
 		
-		List<Action> actions = problemDomain.getActions().getAction();
+		List<Action> actions = problemDomain.getActions();
 		for (Action action : actions) {
 			this.addStringInNewLine(actionPrefix);
 			this.addStringInLine(action.getName());

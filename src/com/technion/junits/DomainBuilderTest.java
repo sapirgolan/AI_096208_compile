@@ -12,11 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.technion.ai.dao.Action;
-import com.technion.ai.dao.Actions;
 import com.technion.ai.dao.Domain;
 import com.technion.ai.dao.Parameter;
 import com.technion.ai.dao.Predicat;
-import com.technion.ai.dao.Predicates;
 import com.technion.ai.dao.Types;
 import com.technion.builder.DomainBuilder;
 
@@ -29,8 +27,8 @@ public class DomainBuilderTest {
 		Domain problemDomain = new Domain();
 		problemDomain.setName("junit");
 		problemDomain.setTypes(new Types());
-		problemDomain.setActions(new Actions());
-		problemDomain.setPredicates(new Predicates());
+//		problemDomain.setActions(new Actions());
+//		problemDomain.setPredicates(new Predicates());
 		classUnderTest = new DomainBuilder(problemDomain); 
 	}
 
@@ -72,7 +70,7 @@ public class DomainBuilderTest {
 		Parameter parameterTwo = createParmeter("?z", "type_2");
 		Predicat predicat = createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
 		//add predicat
-		problemDomain.getPredicates().getPredicat().add(predicat);
+		problemDomain.getPredicats().add(predicat);
 		
 		//
 		StringBuilder buildDomain = classUnderTest.buildDomain();
@@ -101,10 +99,9 @@ public class DomainBuilderTest {
 	@Test
 	//test writeActionParameters()
 	public void testBuldActions() {
-		Actions actions = classUnderTest.getProblemDomain().getActions();
 		Action action = new Action();
 		action.setName("fix");
-		actions.getAction().add(action);
+		classUnderTest.getProblemDomain().getActions().add(action);
 		
 		Parameter parameterOne = createParmeter("?w", "type_1");
 		Parameter parameterTwo = createParmeter("?x", "type_1");
@@ -130,10 +127,9 @@ public class DomainBuilderTest {
 	@Test
 	//WriteActionPrecondition()
 	public void testBuldActions2(){
-		Actions actions = classUnderTest.getProblemDomain().getActions();
 		Action action = new Action();
 		action.setName("fix");
-		actions.getAction().add(action);
+		classUnderTest.getProblemDomain().getActions().add(action);
 		
 		Parameter parameterOne = createParmeter("?w", "soldier");
 		Parameter parameterTwo = createParmeter("?x", "soldier");
