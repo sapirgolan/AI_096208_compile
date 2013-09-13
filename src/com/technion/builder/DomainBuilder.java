@@ -19,12 +19,16 @@ public class DomainBuilder {
 	private Domain problemDomain;
 	private Properties prop;
 	private static final String PROPERTIES_PATH = "/com/technion/properties/strings.properties";
-	private String preconditionPrefix;
-	private String predicatPrefix;
-	private String andOperator;
-	private String notOperator;
-	private String actionPrefix;
-	private String effectPrefix;
+	private static String PRECONDITION_PREFIX;
+	private static String PREDICAT_PREFIX;
+	private static String AND_OPERATOR;
+	private static String NOT_OPERATOR;
+	private static String ACTION_PREFIX;
+	private static String EFFECT_PREFIX;
+	private static String PARAMETERS_PREFIX;
+	private static String TYPES_LINE;
+	private static String DOMAIN_DEFENITION;
+	private static String DOMAIN_PREFIX;
 ;
 	
 	public DomainBuilder(Domain problemDomain) {
@@ -38,11 +42,10 @@ public class DomainBuilder {
 			getStrings();
 			buildDomainDefenitions();
 			buildDomainPrefix();
-			buildTypes();
-			this.addEmptyLine();
-			buildPredicates();
-			this.addEmptyLine();
+			buildTypes(); this.addEmptyLine();
+			buildPredicates(); this.addEmptyLine();
 			this.buldActions();
+			this.addStringInNewLine(")");
 		}
 		return this.stringBuilder;
 	}
@@ -51,17 +54,20 @@ public class DomainBuilder {
 	 * This method populate strings from properties file
 	 */
 	private void getStrings() {
-		preconditionPrefix = prop.getProperty("preconditionPrefix");
-		predicatPrefix = prop.getProperty("predicatPrefix");
-		andOperator = prop.getProperty("andOperator");
-		notOperator = prop.getProperty("notOperator");
-		actionPrefix = prop.getProperty("actionPrefix");
-		effectPrefix = prop.getProperty("effectPrefix");
-
+		PARAMETERS_PREFIX = prop.getProperty("parametersPrefix");
+		PRECONDITION_PREFIX = prop.getProperty("preconditionPrefix");
+		PREDICAT_PREFIX = prop.getProperty("predicatPrefix");
+		AND_OPERATOR = prop.getProperty("andOperator");
+		NOT_OPERATOR = prop.getProperty("notOperator");
+		ACTION_PREFIX = prop.getProperty("actionPrefix");
+		EFFECT_PREFIX = prop.getProperty("effectPrefix");
+		TYPES_LINE = prop.getProperty("types");
+		DOMAIN_DEFENITION = prop.getProperty("domainDefenition");
+		DOMAIN_PREFIX = prop.getProperty("domainPrefix");
 	}
 
 	private void buildPredicates() {
-		this.addStringInNewLine(predicatPrefix + "\n");
+		this.addStringInNewLine(PREDICAT_PREFIX + "\n");
 		
 		List<Predicat> predicats = problemDomain.getPredicats();
 		for (Predicat predicat : predicats) {
@@ -75,41 +81,64 @@ public class DomainBuilder {
 		
 		List<Action> actions = problemDomain.getActions();
 		for (Action action : actions) {
-			this.addStringInNewLine(actionPrefix);
+			this.addStringInNewLine(ACTION_PREFIX);
 			this.addStringInLine(action.getName());
 			List<Predicat> preconditionsPredicats = action.getPreconditions();
 			writeActionParameters(preconditionsPredicats);
 			writeActionPrecondition(preconditionsPredicats);
+			writeActionEffects(action.getEffect());
+			this.addStringInLine(")");
 		}
 	}
 
 	private void writeActionEffects(List<Effect> effects) {
-		// TODO Auto-generated method stub
-
-	}
-	private void writeActionPrecondition(List<Predicat> preconditionsPredicats) {
-		String preconditionPrefix = prop.getProperty("preconditionPrefix");
-		
-		this.addStringInNewLine(preconditionPrefix);
-		if ( preconditionsPredicats.size() > 1 ) {
-			this.addStringInLine(andOperator);
-		}
-		//predicat is the a condition like "(at ?x ?a)"
-		for (Predicat predicat : preconditionsPredicats) {
-			//parameters are the name of variable.  like "?x"
-			if ( predicat.isPositive()!=null && !predicat.isPositive() ) {
-				this.addStringInNewLine("(" + notOperator);
-				this.addStringInLine( predicat.toString(false) );
-				this.addStringInLine(")");
-			} else {
-				this.addStringInNewLine( predicat.toString(false) );
+		this.addStringInNewLine(EFFECT_PREFIX);
+		this.addStringInLine(AND_OPERATOR);
+		for (Effect effect : effects) {
+			List<Predicat> predicats = effect.getPredicat();
+			for (Predicat predicat : predicats) {
+				writePredicatWithFalseOrPositive(predicat);
 			}
 		}
 		this.addStringInNewLine(")");
 	}
+	
+	private void writeActionPrecondition(List<Predicat> preconditionsPredicats) {
+		
+		this.addStringInNewLine(PRECONDITION_PREFIX);
+		if ( preconditionsPredicats.size() > 1 ) {
+			this.addStringInLine(AND_OPERATOR);
+		}
+		//predicat is the a condition like "(at ?x ?a)"
+		for (Predicat predicat : preconditionsPredicats) {
+			writePredicatWithFalseOrPositive(predicat);
+		}
+		this.addStringInNewLine(")");
+	}
+
+	/**
+	 * <p>This method write a short string presentation version of a predicate. The result is similar to:
+	 * <pre>(at ?w ?a)</pre> OR <pre>(NOT (at ?x ?a))</pre>
+	 * </p>
+	 * It does it as followed:
+	 * <ol>
+	 * <li>If the predicate is not positive it add NOT before it</li>
+	 * <li>It drops the predicate type</li>
+	 * </ol>
+	 * @param predicat
+	 */
+	private void writePredicatWithFalseOrPositive(Predicat predicat) {
+		//parameters are the name of variable.  like "?x"
+		if ( predicat.isPositive()!=null && !predicat.isPositive() ) {
+			this.addStringInNewLine("(" + NOT_OPERATOR);
+			this.addStringInLine( predicat.toString(false) );
+			this.addStringInLine(")");
+		} else {
+			this.addStringInNewLine( predicat.toString(false) );
+		}
+	}
 
 	private void writeActionParameters(List<Predicat> predicats) {
-		String parametersPrefix = prop.getProperty("parametersPrefix");
 		List<Parameter> parameters = new ArrayList<Parameter>();
 		
 		//collect all the parameters of all predicates
@@ -133,7 +162,7 @@ public class DomainBuilder {
 			}
 		}
 		
-		this.addStringInNewLine(parametersPrefix);
+		this.addStringInNewLine(PARAMETERS_PREFIX);
 
 		//iterate over the map and prints its content
 		for (String type : map.keySet()) {
@@ -149,10 +178,9 @@ public class DomainBuilder {
 	}
 
 	private void buildTypes() {
-		String typesLine = prop.getProperty("types");
 		String typesValues = problemDomain.getTypes().toString();
-		typesLine = String.format(typesLine, typesValues);
-		this.addStringInNewLine(typesLine);
+		TYPES_LINE = String.format(TYPES_LINE, typesValues);
+		this.addStringInNewLine(TYPES_LINE);
 	}
 
 	private void addStringInNewLine(String newLine) {
@@ -168,8 +196,7 @@ public class DomainBuilder {
 	}
 	
 	private void buildDomainPrefix() {
-		String string = prop.getProperty("domainPrefix");
-		addStringInNewLine(string);
+		addStringInNewLine(DOMAIN_PREFIX);
 	}
 
 	/**
@@ -177,9 +204,8 @@ public class DomainBuilder {
 	 */
 	private void buildDomainDefenitions() {
 		stringBuilder.append("(");
-		String domainDefenition = prop.getProperty("domainDefenition");
-		domainDefenition = String.format(domainDefenition, problemDomain.getName());
-		stringBuilder.append(domainDefenition + "\n");
+		DOMAIN_DEFENITION = String.format(DOMAIN_DEFENITION, problemDomain.getName());
+		stringBuilder.append(DOMAIN_DEFENITION + "\n");
 	}
 
 	public Domain getProblemDomain() {
