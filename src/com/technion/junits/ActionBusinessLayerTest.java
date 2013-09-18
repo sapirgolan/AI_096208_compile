@@ -3,6 +3,7 @@ package com.technion.junits;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,8 +60,11 @@ public class ActionBusinessLayerTest extends AbstractTest{
 	}
 
 	private List<String> getPredicatesNames(List<Predicat> predicats) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> strings = new ArrayList<String>();
+		for (Predicat predicat : predicats) {
+			strings.add( predicat.getName() );
+		}
+		return strings;
 	}
 
 }

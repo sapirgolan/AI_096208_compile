@@ -14,7 +14,7 @@ import com.technion.ai.dao.Effect;
 import com.technion.ai.dao.Parameter;
 import com.technion.ai.dao.Predicat;
 import com.technion.ai.dao.Types;
-import com.technion.builder.DomainBuilder;
+import com.technion.compile.core.DomainBuilder;
 import com.technion.utils.JunitUtils;
 
 public class DomainBuilderTest {

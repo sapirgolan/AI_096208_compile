@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import javax.xml.bind.JAXBException;
 
 import com.technion.ai.dao.Domain;
-import com.technion.builder.DomainBuilder;
 import com.technion.compile.converter.XmlToJavaObjects;
+import com.technion.compile.core.DomainBuilder;
 import com.technion.utils.Utils;
 
 public class Main {
