@@ -1,7 +1,6 @@
 package com.technion.junits;
 
 import java.util.Arrays;
-import java.util.List;
 
 import junit.framework.Assert;
 
@@ -16,6 +15,7 @@ import com.technion.ai.dao.Parameter;
 import com.technion.ai.dao.Predicat;
 import com.technion.ai.dao.Types;
 import com.technion.builder.DomainBuilder;
+import com.technion.utils.JunitUtils;
 
 public class DomainBuilderTest {
 	
@@ -67,10 +67,10 @@ public class DomainBuilderTest {
 		
 		Domain problemDomain = classUnderTest.getProblemDomain();
 		problemDomain.setTypes(types);
-		Parameter parameterOne = createParmeter("?x", "type_1");
-		Parameter parameterTwo = createParmeter("?z", "type_2");
-		Predicat predicat = createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
-		//add predicat
+		Parameter parameterOne = JunitUtils.createParmeter("?x", "type_1");
+		Parameter parameterTwo = JunitUtils.createParmeter("?z", "type_2");
+		Predicat predicat = JunitUtils.createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
+		//add predicate
 		problemDomain.getPredicat().add(predicat);
 		
 		//
@@ -82,23 +82,6 @@ public class DomainBuilderTest {
 		Assert.assertTrue("Number of opening parentheses is diffrent than number of closeing parentheses", countParentheses(domainStr) );
 	}
 
-	private Predicat createPredicat(List<Parameter> parameters, String predicatName) {
-		Predicat predicat = new Predicat();
-		predicat.setName(predicatName);
-		//add parameter
-		for (Parameter parameter : parameters) {
-			predicat.getParameter().add(parameter);
-		}
-		return predicat;
-	}
-
-	private Parameter createParmeter(String name, String type) {
-		Parameter parameterOne = new Parameter();
-		parameterOne.setName(name);
-		parameterOne.setType(type);
-		return parameterOne;
-	}
-
 	@Test
 	//test writeActionParameters()
 	public void testBuldActions() {
@@ -106,17 +89,17 @@ public class DomainBuilderTest {
 		action.setName("fix");
 		classUnderTest.getProblemDomain().getAction().add(action);
 		
-		Parameter parameterOne = createParmeter("?w", "type_1");
-		Parameter parameterTwo = createParmeter("?x", "type_1");
+		Parameter parameterOne = JunitUtils.createParmeter("?w", "type_1");
+		Parameter parameterTwo = JunitUtils.createParmeter("?x", "type_1");
 		
-		Parameter parameterThree = createParmeter("?y", "type_2");
-		Parameter parameterFour = createParmeter("?z", "type_1");
+		Parameter parameterThree = JunitUtils.createParmeter("?y", "type_2");
+		Parameter parameterFour = JunitUtils.createParmeter("?z", "type_1");
 		
-		Parameter parameterFive = createParmeter("?a", "type_2");
+		Parameter parameterFive = JunitUtils.createParmeter("?a", "type_2");
 		
-		Predicat predicatOne = createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
-		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree, parameterFour),"predicat_1");
-		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive),"predicat_1");
+		Predicat predicatOne = JunitUtils.createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
+		Predicat predicatTwo = JunitUtils.createPredicat(Arrays.asList(parameterThree, parameterFour),"predicat_1");
+		Predicat predicatThree = JunitUtils.createPredicat(Arrays.asList(parameterFive),"predicat_1");
 		action.getPredicat().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
 		
 		StringBuilder buildDomain = classUnderTest.buildDomain();
@@ -136,16 +119,16 @@ public class DomainBuilderTest {
 		action.setName("fix");
 		classUnderTest.getProblemDomain().getAction().add(action);
 		
-		Parameter parameterOne = createParmeter("?w", "soldier");
-		Parameter parameterTwo = createParmeter("?x", "soldier");
+		Parameter parameterOne = JunitUtils.createParmeter("?w", "soldier");
+		Parameter parameterTwo = JunitUtils.createParmeter("?x", "soldier");
 		
-		Parameter parameterThree = createParmeter("?y", "policeman");
+		Parameter parameterThree = JunitUtils.createParmeter("?y", "policeman");
 		
-		Parameter parameterFive = createParmeter("?a", "man");
+		Parameter parameterFive = JunitUtils.createParmeter("?a", "man");
 		
-		Predicat predicatOne = createPredicat(Arrays.asList(parameterOne, parameterTwo),"move");
-		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree),"drop");
-		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive),"delete");
+		Predicat predicatOne = JunitUtils.createPredicat(Arrays.asList(parameterOne, parameterTwo),"move");
+		Predicat predicatTwo = JunitUtils.createPredicat(Arrays.asList(parameterThree),"drop");
+		Predicat predicatThree = JunitUtils.createPredicat(Arrays.asList(parameterFive),"delete");
 		predicatThree.setIsPositive(false);
 		action.getPredicat().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
 		
@@ -175,20 +158,22 @@ public class DomainBuilderTest {
 				moveEffectOne = new Effect();
 		fixAction.getEffect().addAll(Arrays.asList(fixEffectOne, fixEffectTwo));
 		moveAction.getEffect().add(moveEffectOne);
+		fixEffectOne.setFValue(0);
+		fixEffectTwo.setFValue(1);
 		
-		Parameter parameterOne = createParmeter("?w", "soldier");
-		Predicat predicatOne = createPredicat(Arrays.asList(parameterOne),"move");
-		Parameter parameterThree = createParmeter("?y", "policeman");
-		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree),"drop");
+		Parameter parameterOne = JunitUtils.createParmeter("?w", "soldier");
+		Predicat predicatOne = JunitUtils.createPredicat(Arrays.asList(parameterOne),"move");
+		Parameter parameterThree = JunitUtils.createParmeter("?y", "policeman");
+		Predicat predicatTwo = JunitUtils.createPredicat(Arrays.asList(parameterThree),"drop");
 		predicatTwo.setIsPositive(false);
 		moveEffectOne.getPredicat().addAll(Arrays.asList(predicatOne, predicatTwo));
 		
-		Parameter parameterFive = createParmeter("?a", "man");
-		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive),"delete");
+		Parameter parameterFive = JunitUtils.createParmeter("?a", "man");
+		Predicat predicatThree = JunitUtils.createPredicat(Arrays.asList(parameterFive),"delete");
 		fixEffectOne.getPredicat().add(predicatThree);
 		
-		Parameter parameterTwo = createParmeter("?x", "soldier");
-		Predicat predicatFour = createPredicat(Arrays.asList(parameterTwo),"jump");
+		Parameter parameterTwo = JunitUtils.createParmeter("?x", "soldier");
+		Predicat predicatFour = JunitUtils.createPredicat(Arrays.asList(parameterTwo),"jump");
 		fixEffectTwo.getPredicat().add(predicatFour);
 		
 		StringBuilder buildDomain = classUnderTest.buildDomain();
@@ -219,5 +204,26 @@ public class DomainBuilderTest {
 		return countCloseingParentheses == countOpeningParentheses;
 	}
 	
+	@Test
+	public void getEffectsNumberTest() {
+		Action fixAction = new Action(),
+				moveAction = new Action();
+		fixAction.setName("fix");
+		moveAction.setName("move");
+		
+		classUnderTest.getProblemDomain().getAction().addAll(Arrays.asList(fixAction, moveAction));
+		
+		Effect fixEffectOne = new Effect(),
+				fixEffectTwo = new Effect(),
+				moveEffectOne = new Effect();
+		fixAction.getEffect().addAll(Arrays.asList(fixEffectOne, fixEffectTwo));
+		moveAction.getEffect().add(moveEffectOne);
+		fixEffectOne.setFValue(0);
+		fixEffectTwo.setFValue(1);
+		
+		moveEffectOne.setFValue(4);
+		int effectsNumber = classUnderTest.getProblemDomain().getEffectsNumber();
+		Assert.assertEquals("", 4, effectsNumber);
+	}
 }
 
