@@ -164,4 +164,16 @@ public class Domain {
         return this.action;
     }
 
+	public int getEffectsNumber() {
+		int effectValue = 0;
+		List<Action> actionList = this.getAction();
+		for (Action action : actionList) {
+			List<Effect> effectList = action.getEffect();
+			for (Effect effect : effectList) {
+				effectValue = Math.max(effectValue, effect.getFValue());
+			}
+		}
+		return effectValue;
+	}
+
 }

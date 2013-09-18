@@ -8,9 +8,9 @@
 
 package com.technion.ai.dao;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -51,7 +51,7 @@ public class Effect {
     @XmlElement(name = "Name", required = true)
     protected String name;
     @XmlElement(required = true)
-    protected BigInteger fValue;
+    protected Integer fValue;
     @XmlElement(name = "Predicat", required = true)
     protected List<Predicat> predicat;
 
@@ -84,10 +84,10 @@ public class Effect {
      * 
      * @return
      *     possible object is
-     *     {@link BigInteger }
+     *     {@link Integer }
      *     
      */
-    public BigInteger getFValue() {
+    public Integer getFValue() {
         return fValue;
     }
 
@@ -96,10 +96,10 @@ public class Effect {
      * 
      * @param value
      *     allowed object is
-     *     {@link BigInteger }
+     *     {@link Integer }
      *     
      */
-    public void setFValue(BigInteger value) {
+    public void setFValue(Integer value) {
         this.fValue = value;
     }
 
