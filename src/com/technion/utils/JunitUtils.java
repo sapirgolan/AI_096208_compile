@@ -3,6 +3,7 @@ package com.technion.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.technion.ai.dao.Action;
 import com.technion.ai.dao.Parameter;
 import com.technion.ai.dao.Predicat;
 
@@ -35,7 +36,17 @@ public class JunitUtils {
 			}
 			predicats.add( createPredicat(parameters, "predicate_" + i) );
 		}
-		
 		return predicats;
 	}
+	
+	public static List<Action> createActions(int numberOfActions) {
+		ArrayList<Action> actions = new ArrayList<Action>();
+		for (int i = 0; i < numberOfActions; i++) {
+			Action action = new Action();
+			action.setName("Action_" + i);
+			actions.add( action );
+		}
+		return actions;
+	}
+	
 }

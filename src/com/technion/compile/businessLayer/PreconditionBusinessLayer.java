@@ -8,14 +8,15 @@ import com.rits.cloning.Cloner;
 import com.technion.ai.dao.Domain;
 import com.technion.ai.dao.Predicat;
 
-public class PreconditionBusinessLayer {
+public class PreconditionBusinessLayer extends AbstractBusinessLayer{
 
 	private HashMap<Integer, List<Predicat>> predicatMap;
 	
 	public PreconditionBusinessLayer( ) {
+		super();
 		this.predicatMap = new HashMap<Integer, List<Predicat>>();
 	}
-	
+
 	public HashMap<Integer, List<Predicat>> buildNewPredicates (Domain problemDomain) {
 		int effectsNumber = problemDomain.getEffectsNumber();
 		List<Predicat> originalPredicats = problemDomain.getPredicat();
@@ -38,7 +39,7 @@ public class PreconditionBusinessLayer {
 
 	private Predicat createOpenPredicate(int index) {
 		Predicat openPredicate = new Predicat();
-		openPredicate.setName("Open" + index);
+		openPredicate.setName( getOpenActionName(index) );
 		return openPredicate;
 	}
 

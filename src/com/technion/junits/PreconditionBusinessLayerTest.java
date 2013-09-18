@@ -1,6 +1,5 @@
 package com.technion.junits;
 
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
@@ -18,7 +17,7 @@ import com.technion.ai.dao.Predicat;
 import com.technion.compile.businessLayer.PreconditionBusinessLayer;
 import com.technion.utils.JunitUtils;
 
-public class PreconditionBusinessLayerTest {
+public class PreconditionBusinessLayerTest extends AbstractTest{
 
 	Domain domain = new Domain();
 	Domain problemDomain = spy(domain);
@@ -53,7 +52,7 @@ public class PreconditionBusinessLayerTest {
 			//check each level contain all original predicates + one new predicate
 			Assert.assertEquals( numberOfPredicates +1, predicatesLevel.size() );
 			//check each level contain all  predicate named 'Open'+'level Index
-			Assert.assertEquals("Open"+i, predicatesLevel.get( predicatesLevel.size()-1 ).getName());
+			Assert.assertEquals(getOpenActionName(i), predicatesLevel.get( predicatesLevel.size()-1 ).getName());
 		}
 	}
 
