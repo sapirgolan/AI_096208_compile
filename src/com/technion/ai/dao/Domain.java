@@ -54,9 +54,9 @@ public class Domain {
     @XmlElement(name = "Types", required = true)
     protected Types types;
     @XmlElement(name = "Predicat", required = true)
-    protected List<Predicat> predicats;
+    protected List<Predicat> predicat;
     @XmlElement(name = "Action", required = true)
-    protected List<Action> actions;
+    protected List<Action> action;
 
     /**
      * Gets the value of the name property.
@@ -118,7 +118,7 @@ public class Domain {
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getPredicats().add(newItem);
+     *    getPredicat().add(newItem);
      * </pre>
      * 
      * 
@@ -128,11 +128,11 @@ public class Domain {
      * 
      * 
      */
-    public List<Predicat> getPredicats() {
-        if (predicats == null) {
-            predicats = new ArrayList<Predicat>();
+    public List<Predicat> getPredicat() {
+        if (predicat == null) {
+            predicat = new ArrayList<Predicat>();
         }
-        return this.predicats;
+        return this.predicat;
     }
 
     /**
@@ -147,7 +147,7 @@ public class Domain {
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getActions().add(newItem);
+     *    getAction().add(newItem);
      * </pre>
      * 
      * 
@@ -157,11 +157,11 @@ public class Domain {
      * 
      * 
      */
-    public List<Action> getActions() {
-        if (actions == null) {
-            actions = new ArrayList<Action>();
+    public List<Action> getAction() {
+        if (action == null) {
+            action = new ArrayList<Action>();
         }
-        return this.actions;
+        return this.action;
     }
 
 }

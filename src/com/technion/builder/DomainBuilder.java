@@ -69,7 +69,7 @@ public class DomainBuilder {
 	private void buildPredicates() {
 		this.addStringInNewLine(PREDICAT_PREFIX + "\n");
 		
-		List<Predicat> predicats = problemDomain.getPredicats();
+		List<Predicat> predicats = problemDomain.getPredicat();
 		for (Predicat predicat : predicats) {
 			this.addStringInNewLine(predicat.toString(true));
 		}
@@ -79,11 +79,11 @@ public class DomainBuilder {
 	private void buldActions() {
 		this.addEmptyLine();
 		
-		List<Action> actions = problemDomain.getActions();
+		List<Action> actions = problemDomain.getAction();
 		for (Action action : actions) {
 			this.addStringInNewLine(ACTION_PREFIX);
 			this.addStringInLine(action.getName());
-			List<Predicat> preconditionsPredicats = action.getPreconditions();
+			List<Predicat> preconditionsPredicats = action.getPredicat();
 			writeActionParameters(preconditionsPredicats);
 			writeActionPrecondition(preconditionsPredicats);
 			writeActionEffects(action.getEffect());
@@ -129,7 +129,7 @@ public class DomainBuilder {
 	 */
 	private void writePredicatWithFalseOrPositive(Predicat predicat) {
 		//parameters are the name of variable.  like "?x"
-		if ( predicat.isPositive()!=null && !predicat.isPositive() ) {
+		if ( predicat.isIsPositive()!=null && !predicat.isIsPositive() ) {
 			this.addStringInNewLine("(" + NOT_OPERATOR);
 			this.addStringInLine( predicat.toString(false) );
 			this.addStringInLine(")");

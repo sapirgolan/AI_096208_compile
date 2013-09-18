@@ -1,7 +1,5 @@
 package com.technion.junits;
 
-import static org.junit.Assert.fail;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +9,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sun.org.apache.bcel.internal.generic.CPInstruction;
 import com.technion.ai.dao.Action;
 import com.technion.ai.dao.Domain;
 import com.technion.ai.dao.Effect;
@@ -74,7 +71,7 @@ public class DomainBuilderTest {
 		Parameter parameterTwo = createParmeter("?z", "type_2");
 		Predicat predicat = createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
 		//add predicat
-		problemDomain.getPredicats().add(predicat);
+		problemDomain.getPredicat().add(predicat);
 		
 		//
 		StringBuilder buildDomain = classUnderTest.buildDomain();
@@ -107,7 +104,7 @@ public class DomainBuilderTest {
 	public void testBuldActions() {
 		Action action = new Action();
 		action.setName("fix");
-		classUnderTest.getProblemDomain().getActions().add(action);
+		classUnderTest.getProblemDomain().getAction().add(action);
 		
 		Parameter parameterOne = createParmeter("?w", "type_1");
 		Parameter parameterTwo = createParmeter("?x", "type_1");
@@ -120,7 +117,7 @@ public class DomainBuilderTest {
 		Predicat predicatOne = createPredicat(Arrays.asList(parameterOne, parameterTwo),"predicat_1");
 		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree, parameterFour),"predicat_1");
 		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive),"predicat_1");
-		action.getPreconditions().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
+		action.getPredicat().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
 		
 		StringBuilder buildDomain = classUnderTest.buildDomain();
 		String domainStr = buildDomain.toString();
@@ -137,7 +134,7 @@ public class DomainBuilderTest {
 	public void testBuldActions2(){
 		Action action = new Action();
 		action.setName("fix");
-		classUnderTest.getProblemDomain().getActions().add(action);
+		classUnderTest.getProblemDomain().getAction().add(action);
 		
 		Parameter parameterOne = createParmeter("?w", "soldier");
 		Parameter parameterTwo = createParmeter("?x", "soldier");
@@ -150,7 +147,7 @@ public class DomainBuilderTest {
 		Predicat predicatTwo = createPredicat(Arrays.asList(parameterThree),"drop");
 		Predicat predicatThree = createPredicat(Arrays.asList(parameterFive),"delete");
 		predicatThree.setIsPositive(false);
-		action.getPreconditions().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
+		action.getPredicat().addAll(Arrays.asList(predicatOne, predicatTwo, predicatThree));
 		
 		StringBuilder buildDomain = classUnderTest.buildDomain();
 		String domainStr = buildDomain.toString();
@@ -171,7 +168,7 @@ public class DomainBuilderTest {
 		fixAction.setName("fix");
 		moveAction.setName("move");
 		
-		classUnderTest.getProblemDomain().getActions().addAll(Arrays.asList(fixAction, moveAction));
+		classUnderTest.getProblemDomain().getAction().addAll(Arrays.asList(fixAction, moveAction));
 		
 		Effect fixEffectOne = new Effect(),
 				fixEffectTwo = new Effect(),
