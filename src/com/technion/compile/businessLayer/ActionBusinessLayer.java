@@ -7,6 +7,9 @@ import java.util.List;
 import com.rits.cloning.Cloner;
 import com.technion.ai.dao.Action;
 import com.technion.ai.dao.Domain;
+import com.technion.ai.dao.Predicat;
+import com.technion.compile.core.CompilationSession;
+import com.technion.compile.ore.PredicateMap;
 
 public class ActionBusinessLayer extends AbstractBusinessLayer {
 
@@ -20,6 +23,7 @@ public class ActionBusinessLayer extends AbstractBusinessLayer {
 	
 	
 	public HashMap<Integer,List<Action>> buildNewActions(Domain domain) {
+		PredicateMap predicateMap = CompilationSession.getInstance().getPredicateMap();
 		int effectsNumber = domain.getEffectsNumber();
 		List<Action> originalActions = domain.getAction();
 		
@@ -33,6 +37,14 @@ public class ActionBusinessLayer extends AbstractBusinessLayer {
 				//renaming action
 				newAction.setName( oldAction.getName()+i );
 				newActions.add(newAction);
+				//replacing The new action old predicate with a new predicate
+				List<Predicat> newActionOldPrediList = newAction.getPredicat();
+				List<Predicat> newActionNewPrediList = new ArrayList<Predicat>();
+				for (Predicat predicat : newActionOldPrediList) {
+					Predicat newPredicate = predicateMap.getPredicate(predicat, level);
+					newActionNewPrediList.add(newPredicate);
+				}
+				newActionOldPrediList = newActionNewPrediList;
 			}
 		}
 		

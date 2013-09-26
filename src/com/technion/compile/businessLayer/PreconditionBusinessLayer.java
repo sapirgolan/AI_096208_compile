@@ -7,6 +7,8 @@ import java.util.List;
 import com.rits.cloning.Cloner;
 import com.technion.ai.dao.Domain;
 import com.technion.ai.dao.Predicat;
+import com.technion.compile.core.CompilationSession;
+import com.technion.compile.ore.PredicateMap;
 
 public class PreconditionBusinessLayer extends AbstractBusinessLayer{
 
@@ -18,9 +20,11 @@ public class PreconditionBusinessLayer extends AbstractBusinessLayer{
 	}
 
 	public HashMap<Integer, List<Predicat>> buildNewPredicates (Domain problemDomain) {
+		PredicateMap map = CompilationSession.getInstance().getPredicateMap();
 		int effectsNumber = problemDomain.getEffectsNumber();
 		List<Predicat> originalPredicats = problemDomain.getPredicat();
 		Cloner cloner = new Cloner();
+		
 		for (int i = 0; i <= effectsNumber; i++) {
 			ArrayList<Predicat> list = new ArrayList<Predicat>();
 			Integer index = Integer.valueOf(i);
@@ -31,6 +35,8 @@ public class PreconditionBusinessLayer extends AbstractBusinessLayer{
 				//renaming predicates
 				newPredicate.setName( originalPredicate.getName()+i );
 				list.add(newPredicate);
+				//add new predicate to session so it will be fetch later on
+				map.addPredicate(originalPredicate, i, newPredicate);
 			}
 			list.add( createOpenPredicate(index) );
 		}
