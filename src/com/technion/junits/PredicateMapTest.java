@@ -1,8 +1,5 @@
 package com.technion.junits;
 
-import java.util.Arrays;
-import java.util.List;
-
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -25,7 +22,7 @@ public class PredicateMapTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
+	/*@Test
 	public void testGetPredicates() {
 		List<Predicat> list;
 		list = classUnderTest.getPredicates(null, null);
@@ -39,9 +36,25 @@ public class PredicateMapTest {
 		
 		list = classUnderTest.getPredicates(new Predicat(), 4);
 		Assert.assertTrue(list.isEmpty());
+	}*/
+	
+	@Test
+	public void testGetPredicates() {
+		Predicat Predicte;
+		Predicte = classUnderTest.getPredicate(null, null);
+		Assert.assertNull(Predicte);
+		
+		Predicte = classUnderTest.getPredicate(null, 1);
+		Assert.assertNull(Predicte);
+		
+		Predicte = classUnderTest.getPredicate(new Predicat(), null);
+		Assert.assertNull(Predicte);
+		
+		Predicte = classUnderTest.getPredicate(new Predicat(), 4);
+		Assert.assertNull(Predicte);
 	}
 
-	@Test
+/*	@Test
 	public void testAddPredicates() {
 		classUnderTest.addPredicates(null, null, null);
 		classUnderTest.addPredicates(null, null, Arrays.asList(new Predicat()));
@@ -56,11 +69,20 @@ public class PredicateMapTest {
 		Assert.assertTrue(list.size()==2);
 		Assert.assertTrue(list.contains(predicat1));
 		Assert.assertTrue(list.contains(predicat2));
-	}
+	}*/
 
 	@Test
 	public void testAddPredicate() {
 		classUnderTest.addPredicate(null, null, null);
+		classUnderTest.addPredicate(null, null, new Predicat());
+		classUnderTest.addPredicate(null, 0, null);
+		classUnderTest.addPredicate(new Predicat(), null, null);
+		
+		Predicat key = new Predicat();
+		Predicat predicat1 = new Predicat();
+		classUnderTest.addPredicate(key, 0, predicat1);
+		Predicat retrivedPredicate = classUnderTest.getPredicate(key,0);
+		Assert.assertTrue( retrivedPredicate.equals(predicat1));
 	}
 
 }

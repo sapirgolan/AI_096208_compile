@@ -15,7 +15,7 @@ public class PredicateMap {
 		this.predicatesMap = new HashMap<Predicat, ObjectsMap<Predicat>>();
 	}
 
-	public List<Predicat> getPredicates(Predicat predicat, Integer index) {
+	private List<Predicat> getPredicates(Predicat predicat, Integer index) {
 		ObjectsMap<Predicat> map = predicatesMap.get(predicat);
 		if (map==null) {
 			return new ArrayList<Predicat>();
@@ -23,7 +23,15 @@ public class PredicateMap {
 		return map.getObjects(index);
 	}
 	
-	public void addPredicates(Predicat predicat, Integer level, List<Predicat> list) {
+	public Predicat getPredicate(Predicat predicat, Integer index) {
+		List<Predicat> predicates = this.getPredicates(predicat, index);
+		if (predicates.size()>0) {
+			return predicates.get(0);
+		}
+		return null;
+	}
+	
+	private void addPredicates(Predicat predicat, Integer level, List<Predicat> list) {
 		ObjectsMap<Predicat> map = predicatesMap.get(predicat);
 		if (map == null) {
 			map = new ObjectsMap<Predicat>();
@@ -32,7 +40,7 @@ public class PredicateMap {
 		map.addObjects(level, list);
 	}
 	
-	public void addPredicate(Predicat predicat, Integer level, Predicat newPredicat) {
-		this.addPredicates(predicat, level, Arrays.asList(newPredicat));
+	public void addPredicate(Predicat predicat, Integer level, Predicat newPredicate) {
+		this.addPredicates(predicat, level, Arrays.asList(newPredicate));
 	}
 }
