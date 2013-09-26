@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.technion.ai.dao.Action;
+import com.technion.ai.dao.Domain;
 import com.technion.ai.dao.Parameter;
 import com.technion.ai.dao.Predicat;
 
@@ -47,6 +48,21 @@ public class JunitUtils {
 			actions.add( action );
 		}
 		return actions;
+	}
+	
+	public static Domain createDomain(int numberOfActions) {
+		Domain problemDomain = new Domain();
+		List<Action> actions = createActions(numberOfActions);
+		problemDomain.getAction().addAll(actions);
+		List<Predicat> predicates = createNPredicatesWithMParam(numberOfActions, numberOfActions);
+		problemDomain.getPredicat().addAll(predicates);
+		
+		for (int i = 0; i < numberOfActions; i++) {
+			Action action = actions.get(i);
+			Predicat predicat = predicates.get(i);
+			action.getPredicat().add(predicat);
+		}
+		return problemDomain;
 	}
 	
 }

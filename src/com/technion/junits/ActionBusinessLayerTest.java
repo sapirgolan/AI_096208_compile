@@ -17,6 +17,7 @@ import com.technion.ai.dao.Action;
 import com.technion.ai.dao.Domain;
 import com.technion.ai.dao.Predicat;
 import com.technion.compile.businessLayer.ActionBusinessLayer;
+import com.technion.compile.businessLayer.PreconditionBusinessLayer;
 import com.technion.utils.JunitUtils;
 
 public class ActionBusinessLayerTest extends AbstractTest{
@@ -38,9 +39,17 @@ public class ActionBusinessLayerTest extends AbstractTest{
 	public void buildNewActionstest() {
 		int highestEffectLevel = 3;
 		int numberOfActions = 6;
-		List<Action> actions = JunitUtils.createActions(numberOfActions);
+		
+		Domain mockDomain = JunitUtils.createDomain(numberOfActions);
+		List<Action> actions = mockDomain.getAction();
+		List<Predicat> predicates = mockDomain.getPredicat();
+		
 		doReturn( highestEffectLevel ).when(problemDomain).getEffectsNumber();
 		doReturn(actions).when(problemDomain).getAction();
+		doReturn(predicates).when(problemDomain).getPredicat();
+		
+		PreconditionBusinessLayer preconditionBusinessLayer = new PreconditionBusinessLayer();
+		preconditionBusinessLayer.buildNewPredicates(problemDomain);
 		
 		HashMap<Integer,List<Action>> map = classUnderTest.buildNewActions(problemDomain);
 		Assert.assertEquals(highestEffectLevel + 1 , map.keySet().size());
@@ -54,6 +63,9 @@ public class ActionBusinessLayerTest extends AbstractTest{
 			
 			List<Predicat> predicats = listActions.get(i).getPredicat();
 			List<String> predicatesNames = getPredicatesNames(predicats);
+			for (String predicatesName : predicatesNames) {
+				Assert.assertTrue( predicatesName.contains( String.valueOf(i) ) );
+			}
 			//check each action has a precondition named 'Open + indexLevel' 
 			Assert.assertTrue(predicatesNames.contains(getOpenActionName(i)));
 		}
