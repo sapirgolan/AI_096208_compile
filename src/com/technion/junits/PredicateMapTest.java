@@ -84,5 +84,23 @@ public class PredicateMapTest {
 		Predicat retrivedPredicate = classUnderTest.getPredicate(key,0);
 		Assert.assertTrue( retrivedPredicate.equals(predicat1));
 	}
+	
+	@Test
+	public void testAddOpenPredicate(){
+		classUnderTest.addOpenPredicate(null, null);
+		Predicat predicat = new Predicat();
+		classUnderTest.addOpenPredicate(0, predicat);
+		Predicat openPredicate = classUnderTest.getOpenPredicate(0);
+		Assert.assertEquals(predicat, openPredicate);
+	}
+	
+	@Test
+	public void testGetOpenPredicate(){
+		Predicat openPredicate;
+		openPredicate = classUnderTest.getOpenPredicate(null);
+		Assert.assertNull(openPredicate);
+		openPredicate = classUnderTest.getOpenPredicate(0);
+		Assert.assertNull(openPredicate);
+	}
 
 }

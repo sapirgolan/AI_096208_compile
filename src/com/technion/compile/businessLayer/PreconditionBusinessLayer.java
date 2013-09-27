@@ -38,7 +38,9 @@ public class PreconditionBusinessLayer extends AbstractBusinessLayer{
 				//add new predicate to session so it will be fetch later on
 				map.addPredicate(originalPredicate, i, newPredicate);
 			}
-			list.add( createOpenPredicate(index) );
+			Predicat openPredicate = createOpenPredicate(index);
+			map.addOpenPredicate(index, openPredicate);
+			list.add( openPredicate );
 		}
 		return predicatMap;
 	}

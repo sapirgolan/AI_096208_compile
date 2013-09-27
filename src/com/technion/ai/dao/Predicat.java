@@ -150,12 +150,14 @@ public class Predicat {
     	StringBuilder builder = new StringBuilder();
        	builder.append("( ");
        	builder.append(this.name + " ");
-       	for (Parameter param : parameter) {
-       		String parameter = param.getName() + " ";
-       		if (withType) {
-       			parameter += "- " + param.getType() + " ";
+       	if (parameter != null) {
+       		for (Parameter param : parameter) {
+       			String parameter = param.getName() + " ";
+       			if (withType) {
+       				parameter += "- " + param.getType() + " ";
+       			}
+       			builder.append( parameter );
        		}
-       		builder.append( parameter );
 		}
        	builder.append(")");
        	

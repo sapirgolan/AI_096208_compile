@@ -10,9 +10,11 @@ import com.technion.ai.dao.Predicat;
 
 public class PredicateMap {
 	private Map<Predicat, ObjectsMap<Predicat>> predicatesMap;
+	private ObjectsMap<Predicat> openPredicates;
 	
 	public PredicateMap () {
 		this.predicatesMap = new HashMap<Predicat, ObjectsMap<Predicat>>();
+		this.openPredicates = new ObjectsMap<Predicat>();
 	}
 
 	private List<Predicat> getPredicates(Predicat predicat, Integer index) {
@@ -42,5 +44,17 @@ public class PredicateMap {
 	
 	public void addPredicate(Predicat predicat, Integer level, Predicat newPredicate) {
 		this.addPredicates(predicat, level, Arrays.asList(newPredicate));
+	}
+
+	public void addOpenPredicate(Integer level, Predicat predicat) {
+		openPredicates.addObject(level, predicat);
+	}
+
+	public Predicat getOpenPredicate(Integer level) {
+		List<Predicat> list = openPredicates.getObjects(level);
+		if (list.size() > 0) {
+			return list.get(0);
+		}
+		return null;
 	}
 }
