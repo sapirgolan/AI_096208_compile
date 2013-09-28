@@ -18,6 +18,10 @@ public class DomainWrapper implements Cloneable {
 		this.typeWrapper = new TypeWrapper(domain.getTypes());
 	}
 
+	public Domain getDomain() {
+		return domain;
+	}
+
 	/**
 	 * @return
 	 * @see com.technion.ai.dao.Domain#getName()

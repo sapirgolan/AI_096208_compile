@@ -13,6 +13,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import com.technion.ai.dao.Domain;
 import com.technion.ai.dao.ObjectFactory;
+import com.technion.ai.wrappers.DomainWrapper;
 
 public class XmlToJavaObjects {
 
@@ -40,7 +41,7 @@ public class XmlToJavaObjects {
  * @throws JAXBException
  * @throws FileNotFoundException
  */
-  public static Domain XmlToJavaConvert(String filename) throws JAXBException,
+  public static DomainWrapper XmlToJavaConvert(String filename) throws JAXBException,
   FileNotFoundException {
 	  //1. We need to create JAXContext instance
 	  JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
@@ -54,10 +55,18 @@ public class XmlToJavaObjects {
 	  Source source = new StreamSource(inputStream);
 	  JAXBElement<Domain> unmarshalledObject = unmarshaller.unmarshal(source, Domain.class);
 
-	  //4. Get the instance of the required JAXB Root Class from the JAXBElement.
+	  //5. Get the instance of the required JAXB Root Class from the JAXBElement.
 	  Domain domain = unmarshalledObject.getValue();
 	  
-	  return domain;
+	  //4. Wrap the dto with wrappers
+	  DomainWrapper domainWrapper = wrapDtos(domain);
+	  return domainWrapper;
+  }
+
+  private static DomainWrapper wrapDtos(Domain domain) {
+	  DomainWrapper domainWrapper = new DomainWrapper(domain);
+	  return domainWrapper;
+	  
   }
 
 }
