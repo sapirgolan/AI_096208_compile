@@ -1,5 +1,8 @@
 package com.technion.ai.wrappers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.technion.ai.dao.Parameter;
 
 public class ParameterWrapper implements Cloneable {
@@ -39,6 +42,15 @@ public class ParameterWrapper implements Cloneable {
 	 */
 	public void setType(String value) {
 		parameter.setType(value);
+	}
+
+	public static List<ParameterWrapper> convertParametersToParameterWrappers(List<Parameter> parameters) {
+		ArrayList<ParameterWrapper> parameterWrappers = new ArrayList<ParameterWrapper>();
+		for (Parameter parameter : parameters) {
+			ParameterWrapper parameterWrapper = new ParameterWrapper(parameter);
+			parameterWrappers.add(parameterWrapper);
+		}
+		return parameterWrappers;
 	}
 	
 	

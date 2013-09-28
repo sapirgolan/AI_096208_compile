@@ -1,15 +1,17 @@
 package com.technion.ai.wrappers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.technion.ai.dao.Effect;
-import com.technion.ai.dao.Predicat;
 
 public class EffectWrapper implements Cloneable {
 	private Effect effect;
+	private List<PredicateWrapper> predicateWrappers;
 	
 	public EffectWrapper (Effect effect) {
 		this.effect = effect;
+		this.predicateWrappers = PredicateWrapper.convertPredicatesToPredicateWappers(effect.getPredicat());
 	}
 
 	/**
@@ -48,8 +50,17 @@ public class EffectWrapper implements Cloneable {
 	 * @return
 	 * @see com.technion.ai.dao.Effect#getPredicat()
 	 */
-	public List<Predicat> getPredicat() {
-		return effect.getPredicat();
+	public List<PredicateWrapper> getPredicat() {
+		return predicateWrappers;
+	}
+
+	public static List<EffectWrapper> convertEffectsToEffectsWappers( List<Effect> effects) {
+		ArrayList<EffectWrapper> list = new ArrayList<EffectWrapper>();
+		for (Effect effect : effects) {
+			EffectWrapper effectWrapper = new EffectWrapper(effect);
+			list.add(effectWrapper);
+		}
+		return list;
 	}
 	
 }

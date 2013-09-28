@@ -1,16 +1,19 @@
 package com.technion.ai.wrappers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.technion.ai.dao.Action;
-import com.technion.ai.dao.Effect;
-import com.technion.ai.dao.Predicat;
 
 public class ActionWrapper implements Cloneable {
 	private Action action;
+	private List<PredicateWrapper> predicateWrappers;
+	private List<EffectWrapper> effectWrappers;
 	
 	public ActionWrapper(Action action) {
 		this.action = action;
+		this.predicateWrappers = PredicateWrapper.convertPredicatesToPredicateWappers(action.getPredicat());
+		this.effectWrappers = EffectWrapper.convertEffectsToEffectsWappers( action.getEffect() );
 	}
 
 	/**
@@ -33,16 +36,25 @@ public class ActionWrapper implements Cloneable {
 	 * @return
 	 * @see com.technion.ai.dao.Action#getPredicat()
 	 */
-	public List<Predicat> getPredicat() {
-		return action.getPredicat();
+	public List<PredicateWrapper> getPredicat() {
+		return predicateWrappers;
 	}
 
 	/**
 	 * @return
 	 * @see com.technion.ai.dao.Action#getEffect()
 	 */
-	public List<Effect> getEffect() {
-		return action.getEffect();
+	public List<EffectWrapper> getEffect() {
+		return effectWrappers;
+	}
+	
+	public static List<ActionWrapper> convertActionToActionWrappers (List<Action> actions) {
+		List<ActionWrapper> list = new ArrayList<ActionWrapper>();
+		for (Action action : actions) {
+			ActionWrapper actionWrapper = new ActionWrapper(action);
+			list.add(actionWrapper);
+		}
+		return list;
 	}
 	
 }

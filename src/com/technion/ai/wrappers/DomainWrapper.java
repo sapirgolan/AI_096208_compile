@@ -2,16 +2,20 @@ package com.technion.ai.wrappers;
 
 import java.util.List;
 
-import com.technion.ai.dao.Action;
 import com.technion.ai.dao.Domain;
-import com.technion.ai.dao.Predicat;
 import com.technion.ai.dao.Types;
 
 public class DomainWrapper implements Cloneable {
 	private Domain domain;
+	private List<ActionWrapper> actionWrappers;
+	private List<PredicateWrapper> predicateWrappers;
+	private TypeWrapper typeWrapper;
 	
-	public DomainWrapper ( Domain domain) {
+	public DomainWrapper ( Domain domain ) {
 		this.domain = domain;
+		this.actionWrappers = ActionWrapper.convertActionToActionWrappers( domain.getAction() );
+		this.predicateWrappers = PredicateWrapper.convertPredicatesToPredicateWappers( domain.getPredicat() );
+		this.typeWrapper = new TypeWrapper(domain.getTypes());
 	}
 
 	/**
@@ -34,8 +38,8 @@ public class DomainWrapper implements Cloneable {
 	 * @return
 	 * @see com.technion.ai.dao.Domain#getTypes()
 	 */
-	public Types getTypes() {
-		return domain.getTypes();
+	public TypeWrapper getTypes() {
+		return typeWrapper;
 	}
 
 	/**
@@ -50,16 +54,16 @@ public class DomainWrapper implements Cloneable {
 	 * @return
 	 * @see com.technion.ai.dao.Domain#getPredicat()
 	 */
-	public List<Predicat> getPredicat() {
-		return domain.getPredicat();
+	public List<PredicateWrapper> getPredicat() {
+		return predicateWrappers;
 	}
 
 	/**
 	 * @return
 	 * @see com.technion.ai.dao.Domain#getAction()
 	 */
-	public List<Action> getAction() {
-		return domain.getAction();
+	public List<ActionWrapper> getAction() {
+		return actionWrappers;
 	}
 
 	/**
@@ -69,7 +73,5 @@ public class DomainWrapper implements Cloneable {
 	public int getEffectsNumber() {
 		return domain.getEffectsNumber();
 	}
-	
-	
 
 }

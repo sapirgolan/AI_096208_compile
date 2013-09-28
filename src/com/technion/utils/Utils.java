@@ -44,7 +44,6 @@ public class Utils {
 			bufferWritter.write(fileContent);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
@@ -52,7 +51,6 @@ public class Utils {
 				try {
 					bufferWritter.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

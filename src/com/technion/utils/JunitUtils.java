@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.technion.ai.dao.Action;
 import com.technion.ai.dao.Domain;
+import com.technion.ai.dao.Effect;
 import com.technion.ai.dao.Parameter;
 import com.technion.ai.dao.Predicat;
 
@@ -63,6 +64,28 @@ public class JunitUtils {
 			action.getPredicat().add(predicat);
 		}
 		return problemDomain;
+	}
+
+	public static List<Effect> createEffects(int numberOfEffects) {
+		List<Effect> effects = new ArrayList<Effect>();
+		for (int i = 0; i < numberOfEffects; i++) {
+			Effect effect = new Effect();
+			effect.setFValue(i);
+			effect.setName("Test_Effect_" + i);
+			List<Predicat> predicates = createNPredicatesWithMParam(i+1, i+2);
+			effect.getPredicat().addAll(predicates);
+			effects.add(effect);
+		}
+		return effects;
+	}
+
+	public static List<Parameter> createNParameters(int numberOfParameters) {
+		ArrayList<Parameter> parameters = new ArrayList<Parameter>();
+		for (int i = 0; i < numberOfParameters; i++) {
+			Parameter parameter = createParmeter("Test_Parameter_" + i, "Test_type_" + i);
+			parameters.add(parameter);
+		}
+		return parameters;
 	}
 	
 }

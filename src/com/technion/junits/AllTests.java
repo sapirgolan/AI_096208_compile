@@ -6,11 +6,16 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ 
-	ActionBusinessLayerTest.class, 
-	DomainBuilderTest.class, 
+	ActionBusinessLayerTest.class,
+	ActionWrapperTest.class,
+	DomainBuilderTest.class,
+	DomainWrapperTest.class,
+	EffectWrapperTest.class,
 	ObjectsMapTest.class,
-	PreconditionBusinessLayerTest.class, 
+	ParameterWrapperTest.class,
+	PreconditionBusinessLayerTest.class,
 	PredicateMapTest.class,
+	PredicateWrapperTest.class,
 	XmlToJavaObjectsTest.class 
 })
 
