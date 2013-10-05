@@ -1,5 +1,7 @@
 package com.technion.junits;
 
+import java.util.List;
+
 import junit.framework.Assert;
 
 import org.junit.After;
@@ -7,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.technion.ai.dao.Predicat;
+import com.technion.ai.wrappers.PredicateWrapper;
 import com.technion.compile.ore.PredicateMap;
 
 public class PredicateMapTest {
@@ -40,17 +43,17 @@ public class PredicateMapTest {
 	
 	@Test
 	public void testGetPredicates() {
-		Predicat Predicte;
+		PredicateWrapper Predicte;
 		Predicte = classUnderTest.getPredicate(null, null);
 		Assert.assertNull(Predicte);
 		
 		Predicte = classUnderTest.getPredicate(null, 1);
 		Assert.assertNull(Predicte);
 		
-		Predicte = classUnderTest.getPredicate(new Predicat(), null);
+		Predicte = classUnderTest.getPredicate(new PredicateWrapper(new Predicat()), null);
 		Assert.assertNull(Predicte);
 		
-		Predicte = classUnderTest.getPredicate(new Predicat(), 4);
+		Predicte = classUnderTest.getPredicate(new PredicateWrapper(new Predicat()), 4);
 		Assert.assertNull(Predicte);
 	}
 
@@ -74,33 +77,56 @@ public class PredicateMapTest {
 	@Test
 	public void testAddPredicate() {
 		classUnderTest.addPredicate(null, null, null);
-		classUnderTest.addPredicate(null, null, new Predicat());
+		classUnderTest.addPredicate(null, null, new PredicateWrapper(new Predicat()));
 		classUnderTest.addPredicate(null, 0, null);
-		classUnderTest.addPredicate(new Predicat(), null, null);
+		classUnderTest.addPredicate(new PredicateWrapper(new Predicat()), null, null);
 		
 		Predicat key = new Predicat();
+		PredicateWrapper keyWrapper = new PredicateWrapper(key);
 		Predicat predicat1 = new Predicat();
-		classUnderTest.addPredicate(key, 0, predicat1);
-		Predicat retrivedPredicate = classUnderTest.getPredicate(key,0);
-		Assert.assertTrue( retrivedPredicate.equals(predicat1));
+		PredicateWrapper wrapper = new PredicateWrapper(predicat1);
+		
+		classUnderTest.addPredicate(keyWrapper, 0, wrapper);
+		PredicateWrapper retrivedPredicate = classUnderTest.getPredicate(keyWrapper,0);
+		Assert.assertEquals(retrivedPredicate, wrapper);
 	}
 	
 	@Test
 	public void testAddOpenPredicate(){
 		classUnderTest.addOpenPredicate(null, null);
 		Predicat predicat = new Predicat();
-		classUnderTest.addOpenPredicate(0, predicat);
-		Predicat openPredicate = classUnderTest.getOpenPredicate(0);
-		Assert.assertEquals(predicat, openPredicate);
+		PredicateWrapper wrapper = new PredicateWrapper(predicat);
+		classUnderTest.addOpenPredicate(0, wrapper);
+		PredicateWrapper openPredicate = classUnderTest.getOpenPredicate(0);
+		Assert.assertEquals(wrapper, openPredicate);
 	}
 	
 	@Test
 	public void testGetOpenPredicate(){
-		Predicat openPredicate;
+		PredicateWrapper openPredicate;
 		openPredicate = classUnderTest.getOpenPredicate(null);
 		Assert.assertNull(openPredicate);
 		openPredicate = classUnderTest.getOpenPredicate(0);
 		Assert.assertNull(openPredicate);
+	}
+	
+	@Test
+	public void getOpenPredicatesAboveLevel(){
+		List<PredicateWrapper> predicatesAboveLevel;
+		predicatesAboveLevel = classUnderTest.getOpenPredicatesAboveLevel(null);
+		Assert.assertNotNull(predicatesAboveLevel);
+		Assert.assertTrue(predicatesAboveLevel.isEmpty());
+		//Adds 3 predicates
+		classUnderTest.addOpenPredicate(0, new PredicateWrapper(new Predicat()));
+		classUnderTest.addOpenPredicate(1, new PredicateWrapper(new Predicat()));
+		classUnderTest.addOpenPredicate(2, new PredicateWrapper(new Predicat()));
+		
+		predicatesAboveLevel = classUnderTest.getOpenPredicatesAboveLevel(0);
+		Assert.assertEquals(2, predicatesAboveLevel.size());
+		predicatesAboveLevel = classUnderTest.getOpenPredicatesAboveLevel(1);
+		Assert.assertEquals(1, predicatesAboveLevel.size());
+		predicatesAboveLevel = classUnderTest.getOpenPredicatesAboveLevel(88);
+		Assert.assertTrue(predicatesAboveLevel.isEmpty());
 	}
 
 }

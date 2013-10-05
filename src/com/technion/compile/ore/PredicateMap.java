@@ -6,55 +6,60 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.technion.ai.dao.Predicat;
+import com.technion.ai.wrappers.PredicateWrapper;
 
 public class PredicateMap {
-	private Map<Predicat, ObjectsMap<Predicat>> predicatesMap;
-	private ObjectsMap<Predicat> openPredicates;
+	private Map<PredicateWrapper, ObjectsMap<PredicateWrapper>> predicatesMap;
+	private ObjectsMap<PredicateWrapper> openPredicates;
 	
 	public PredicateMap () {
-		this.predicatesMap = new HashMap<Predicat, ObjectsMap<Predicat>>();
-		this.openPredicates = new ObjectsMap<Predicat>();
+		this.predicatesMap = new HashMap<PredicateWrapper, ObjectsMap<PredicateWrapper>>();
+		this.openPredicates = new ObjectsMap<PredicateWrapper>();
 	}
 
-	private List<Predicat> getPredicates(Predicat predicat, Integer index) {
-		ObjectsMap<Predicat> map = predicatesMap.get(predicat);
+	private List<PredicateWrapper> getPredicates(PredicateWrapper predicat, Integer index) {
+		ObjectsMap<PredicateWrapper> map = predicatesMap.get(predicat);
 		if (map==null) {
-			return new ArrayList<Predicat>();
+			return new ArrayList<PredicateWrapper>();
 		}
 		return map.getObjects(index);
 	}
 	
-	public Predicat getPredicate(Predicat predicat, Integer index) {
-		List<Predicat> predicates = this.getPredicates(predicat, index);
+	public PredicateWrapper getPredicate(PredicateWrapper predicat, Integer index) {
+		List<PredicateWrapper> predicates = this.getPredicates(predicat, index);
 		if (predicates.size()>0) {
 			return predicates.get(0);
 		}
 		return null;
 	}
 	
-	private void addPredicates(Predicat predicat, Integer level, List<Predicat> list) {
-		ObjectsMap<Predicat> map = predicatesMap.get(predicat);
+	private void addPredicates(PredicateWrapper predicat, Integer level, List<PredicateWrapper> list) {
+		ObjectsMap<PredicateWrapper> map = predicatesMap.get(predicat);
 		if (map == null) {
-			map = new ObjectsMap<Predicat>();
+			map = new ObjectsMap<PredicateWrapper>();
 			predicatesMap.put(predicat, map);
 		}
 		map.addObjects(level, list);
 	}
 	
-	public void addPredicate(Predicat predicat, Integer level, Predicat newPredicate) {
+	public void addPredicate(PredicateWrapper predicat, Integer level, PredicateWrapper newPredicate) {
 		this.addPredicates(predicat, level, Arrays.asList(newPredicate));
 	}
 
-	public void addOpenPredicate(Integer level, Predicat predicat) {
+	public void addOpenPredicate(Integer level, PredicateWrapper predicat) {
 		openPredicates.addObject(level, predicat);
 	}
 
-	public Predicat getOpenPredicate(Integer level) {
-		List<Predicat> list = openPredicates.getObjects(level);
+	public PredicateWrapper getOpenPredicate(Integer level) {
+		List<PredicateWrapper> list = openPredicates.getObjects(level);
 		if (list.size() > 0) {
 			return list.get(0);
 		}
 		return null;
+	}
+	
+	public List<PredicateWrapper> getOpenPredicatesAboveLevel(Integer level) {
+		List<PredicateWrapper> objectsWithKeyGreaterThan = openPredicates.getObjectsWithKeyGreaterThan(level);
+		return objectsWithKeyGreaterThan;
 	}
 }

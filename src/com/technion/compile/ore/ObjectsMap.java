@@ -3,8 +3,10 @@ package com.technion.compile.ore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * <p>This class store a map of pairs (Integer, List of {@link Object}). 
@@ -26,8 +28,8 @@ public class ObjectsMap<T> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void addObject(Integer index, T predicat) {
-		this.addObjects(index,  Arrays.asList(predicat));
+	public void addObject(Integer index, T object) {
+		this.addObjects(index,  Arrays.asList(object));
 	}
 	
 	public List<T> getObjects(Integer index) {
@@ -36,6 +38,20 @@ public class ObjectsMap<T> {
 			list = new ArrayList<T>();
 		}
 		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<T> getObjectsWithKeyGreaterThan(Integer threshold) {
+		ArrayList<T> result = new ArrayList<T>();
+		Iterator<Entry<Integer, List<T>>> iterator = map.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<Integer, List<T>> entry = (Map.Entry<Integer, List<T>>) iterator.next();
+			if ( entry.getKey() > threshold ) {
+				result.add((T) entry.getValue());
+			}
+		}
+		
+		return result;
 	}
 
 }

@@ -66,5 +66,19 @@ public class ObjectsMapTest {
 		list = objectsMap.getObjects(1);
 		Assert.assertTrue(list.isEmpty());
 	}
+	
+	@Test
+	public void testGetObjectsWithKeyGreaterThan(){
+		ObjectsMap<Integer> objectsMap = new ObjectsMap<Integer>();
+		int limit = 5;
+		for (int i = 0; i < limit; i++) {
+			objectsMap.addObject(i, i);
+		}
+		
+		for (int i = 0; i < limit; i++) {
+			List<Integer> list = objectsMap.getObjectsWithKeyGreaterThan(i);
+			Assert.assertEquals(limit -(i+1), list.size());
+		}
+	}
 
 }
