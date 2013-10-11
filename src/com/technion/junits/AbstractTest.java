@@ -24,4 +24,9 @@ public abstract class AbstractTest {
 	protected String getOpenActionName(int indexLevel) {
 		return String.format(openActionName, indexLevel);
 	}
+	
+	protected String getLevelString(int level) {
+		String levelStr = prop.getProperty("level");
+		return String.format(levelStr, level);
+	}
 }
