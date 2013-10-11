@@ -52,6 +52,10 @@ public class ActionWrapper implements Cloneable {
 		return predicateWrappers;
 	}
 
+	public void setPredicat(List<PredicateWrapper> predicateWrappers) {
+		this.predicateWrappers = predicateWrappers;
+	}
+
 	/**
 	 * @return
 	 * @see com.technion.ai.dao.Action#getEffect()
