@@ -49,11 +49,8 @@ public class ActionBusinessLayer extends AbstractBusinessLayer {
 				}
 				//After all predicates were added it's time to add open predicates
 				List<PredicateWrapper> openPredicates = getOpenPredicates( sessionPredicateMap, i );
-//				PredicateWrapper openPredicate = predicateMap.getOpenPredicate(i);
 				newPrediList.addAll(openPredicates);
 				newAction.setPredicat(newPrediList);
-//				newAction.getPredicat().clear();
-//				newAction.getPredicat().addAll(newPrediList);
 			}
 		}
 		
@@ -63,10 +60,13 @@ public class ActionBusinessLayer extends AbstractBusinessLayer {
 
 	private List<PredicateWrapper> getOpenPredicates(PredicateMap predicateMap, int level) {
 		ArrayList<PredicateWrapper> result = new ArrayList<PredicateWrapper>();
-		PredicateWrapper positiveOpenPredicate = predicateMap.getOpenPredicate(level);
-		result.add(positiveOpenPredicate);
+		PredicateWrapper predicate = predicateMap.getOpenPredicate(level);
+		if (predicate!=null) {
+			PredicateWrapper positivePredicate = predicate.clone();
+			positivePredicate.setIsPositive(true);
+			result.add(positivePredicate);
+		}
 		
-		//
 		List<PredicateWrapper> openPredicatesAbove = predicateMap.getOpenPredicatesAboveLevel(level);
 		for (PredicateWrapper preds : openPredicatesAbove) {
 			PredicateWrapper negPred = preds.clone();

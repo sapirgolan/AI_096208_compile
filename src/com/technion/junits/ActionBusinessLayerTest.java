@@ -101,6 +101,16 @@ public class ActionBusinessLayerTest extends AbstractTest{
 			List<PredicateWrapper> predicates = action.getPredicat();
 			int expectedNumberOfOpenPredicates = numberOfOpenPredicates-levelIndex+1;
 			Assert.assertEquals(expectedNumberOfOpenPredicates, predicates.size());
+			int numberOfNegativePreds = 0, numberOfPositivePreds = 0;
+			for (PredicateWrapper predicateWrapper : predicates) {
+				if (predicateWrapper.isIsPositive()) {
+					numberOfPositivePreds++;
+				} else {
+					numberOfNegativePreds++;
+				}
+			}
+			Assert.assertEquals(1, numberOfPositivePreds);
+			Assert.assertEquals(numberOfOpenPredicates-levelIndex, numberOfNegativePreds);
 		}
 	}
 

@@ -8,11 +8,13 @@ import com.technion.ai.dao.Predicat;
 public class PredicateWrapper implements Cloneable  {
 	private Predicat predicate;
 	private String predicateName;
+	private Boolean isPositive;
 	private List<ParameterWrapper> parameterWrappers; 
 
 	public PredicateWrapper( Predicat predicat) {
 		this.predicate = predicat;
 		this.predicateName = predicat.getName();
+		this.isPositive = predicat.isIsPositive();
 		this.parameterWrappers = ParameterWrapper.convertParametersToParameterWrappers( predicat.getParameter() );
 	}
 	
@@ -20,6 +22,7 @@ public class PredicateWrapper implements Cloneable  {
 		PredicateWrapper clone = null;
 		try {
 			clone = (PredicateWrapper) super.clone();
+			clone.setIsPositive(new Boolean(this.isIsPositive()));
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -42,8 +45,11 @@ public class PredicateWrapper implements Cloneable  {
 	 * @return
 	 * @see com.technion.ai.dao.Predicat#isIsPositive()
 	 */
-	public Boolean isIsPositive() {
-		return predicate.isIsPositive();
+	public boolean isIsPositive() {
+		if (isPositive == null) {
+			return true;
+		}
+		return isPositive;
 	}
 
 	/**
@@ -51,7 +57,7 @@ public class PredicateWrapper implements Cloneable  {
 	 * @see com.technion.ai.dao.Predicat#setIsPositive(java.lang.Boolean)
 	 */
 	public void setIsPositive(Boolean value) {
-		predicate.setIsPositive(value);
+		isPositive = value;
 	}
 
 	/**
