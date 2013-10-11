@@ -7,15 +7,27 @@ import com.technion.ai.dao.Predicat;
 
 public class PredicateWrapper implements Cloneable  {
 	private Predicat predicate;
+	private String predicateName;
 	private List<ParameterWrapper> parameterWrappers; 
 
 	public PredicateWrapper( Predicat predicat) {
 		this.predicate = predicat;
+		this.predicateName = predicat.getName();
 		this.parameterWrappers = ParameterWrapper.convertParametersToParameterWrappers( predicat.getParameter() );
 	}
 	
+	public PredicateWrapper clone() {
+		PredicateWrapper clone = null;
+		try {
+			clone = (PredicateWrapper) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return clone;
+	}
+	
 	public String getName() {
-		return predicate.getName();
+		return this.predicateName;
 	}
 
 	/**
@@ -23,7 +35,7 @@ public class PredicateWrapper implements Cloneable  {
 	 * @see com.technion.ai.dao.Predicat#setName(java.lang.String)
 	 */
 	public void setName(String value) {
-		predicate.setName(value);
+		this.predicateName = value;
 	}
 
 	/**

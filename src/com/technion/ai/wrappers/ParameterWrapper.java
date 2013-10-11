@@ -7,9 +7,11 @@ import com.technion.ai.dao.Parameter;
 
 public class ParameterWrapper implements Cloneable {
 	private Parameter parameter;
+	private String parameterName;
 	
 	public ParameterWrapper (Parameter parameter) {
 		this.parameter = parameter;
+		this.parameterName = parameter.getName();
 	}
 
 	/**
@@ -17,7 +19,7 @@ public class ParameterWrapper implements Cloneable {
 	 * @see com.technion.ai.dao.Parameter#getName()
 	 */
 	public String getName() {
-		return parameter.getName();
+		return this.parameterName;
 	}
 
 	/**
@@ -25,7 +27,7 @@ public class ParameterWrapper implements Cloneable {
 	 * @see com.technion.ai.dao.Parameter#setName(java.lang.String)
 	 */
 	public void setName(String value) {
-		parameter.setName(value);
+		this.parameterName = value;
 	}
 
 	/**

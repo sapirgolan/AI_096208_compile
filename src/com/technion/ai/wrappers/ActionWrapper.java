@@ -7,13 +7,25 @@ import com.technion.ai.dao.Action;
 
 public class ActionWrapper implements Cloneable {
 	private Action action;
+	private String actionName;
 	private List<PredicateWrapper> predicateWrappers;
 	private List<EffectWrapper> effectWrappers;
 	
 	public ActionWrapper(Action action) {
 		this.action = action;
+		this.actionName = action.getName();
 		this.predicateWrappers = PredicateWrapper.convertPredicatesToPredicateWappers(action.getPredicat());
 		this.effectWrappers = EffectWrapper.convertEffectsToEffectsWappers( action.getEffect() );
+	}
+	
+	public ActionWrapper clone() {
+		ActionWrapper clone = null;
+		try {
+			clone = (ActionWrapper) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return clone;
 	}
 
 	/**
@@ -21,7 +33,7 @@ public class ActionWrapper implements Cloneable {
 	 * @see com.technion.ai.dao.Action#getName()
 	 */
 	public String getName() {
-		return action.getName();
+		return actionName;
 	}
 
 	/**
@@ -29,7 +41,7 @@ public class ActionWrapper implements Cloneable {
 	 * @see com.technion.ai.dao.Action#setName(java.lang.String)
 	 */
 	public void setName(String value) {
-		action.setName(value);
+		actionName = value;
 	}
 
 	/**

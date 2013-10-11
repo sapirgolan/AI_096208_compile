@@ -7,10 +7,12 @@ import com.technion.ai.dao.Effect;
 
 public class EffectWrapper implements Cloneable {
 	private Effect effect;
+	private String effectName;
 	private List<PredicateWrapper> predicateWrappers;
 	
 	public EffectWrapper (Effect effect) {
 		this.effect = effect;
+		this.effectName = effect.getName();
 		this.predicateWrappers = PredicateWrapper.convertPredicatesToPredicateWappers(effect.getPredicat());
 	}
 
@@ -19,7 +21,7 @@ public class EffectWrapper implements Cloneable {
 	 * @see com.technion.ai.dao.Effect#getName()
 	 */
 	public String getName() {
-		return effect.getName();
+		return effectName;
 	}
 
 	/**
@@ -27,7 +29,7 @@ public class EffectWrapper implements Cloneable {
 	 * @see com.technion.ai.dao.Effect#setName(java.lang.String)
 	 */
 	public void setName(String value) {
-		effect.setName(value);
+		effectName = value;
 	}
 
 	/**
