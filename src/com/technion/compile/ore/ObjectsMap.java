@@ -40,17 +40,22 @@ public class ObjectsMap<T> {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
+	/**
+	 * <P>Returns <code>list</code> of object type T.
+	 * Each member of the list is of type T. 
+	 * @param threshold - Only objects that are on level above this value will be in the result
+	 * @return
+	 */
 	public List<T> getObjectsWithKeyGreaterThan(Integer threshold) {
 		ArrayList<T> result = new ArrayList<T>();
 		Iterator<Entry<Integer, List<T>>> iterator = map.entrySet().iterator();
 		while (iterator.hasNext()) {
 			Map.Entry<Integer, List<T>> entry = (Map.Entry<Integer, List<T>>) iterator.next();
 			if ( entry.getKey() > threshold ) {
-				result.add((T) entry.getValue());
+				List<T> valuelistlist = entry.getValue();
+				result.addAll(valuelistlist);
 			}
 		}
-		
 		return result;
 	}
 
